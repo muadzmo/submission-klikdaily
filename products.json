@@ -16,14 +16,7 @@
         {
             "product_name": "Le Minerale 600ml",
             "product_id": "leMinerale_600ml",
-            "units": [{
-                "name": "pak",
-                "price": 24000
-            },
-            {
-                "name": "pcs",
-                "price": 4000
-            },
+            "units": [
             {
                 "name": "karton",
                 "price": 96000
