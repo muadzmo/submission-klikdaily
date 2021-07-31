@@ -3,10 +3,7 @@
         {
             "product_name": "Morning Dew Milk 1l",
             "product_id": "morningDewMilk_1l",
-            "units": [{
-                "name": "pak",
-                "price": 60000
-            },
+            "units": [
             {
                 "name": "pcs",
                 "price": 10000
