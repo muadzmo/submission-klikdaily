@@ -145,7 +145,7 @@
                             &nbsp;
                         </div>
                         <div class="col-sm border-top margin-top-2">
-                            <b>Total <span class="align-right" id="totalNettPrice"></span></b>
+                            <b>Total <span class="align-right" id="sumTotalPrice"></span></b>
                         </div>
                     </div>
                 </div>
@@ -168,6 +168,7 @@
     const listProductId = document.getElementById('listProduct');
     const buttonNewItem = document.getElementById('newItem');
     const almostFooterId = document.getElementById('almostFooter');
+    const sumTotalPriceId = document.getElementById('sumTotalPrice');
 
     let doneRender = 0;
        
@@ -281,7 +282,8 @@
             </div>
         `;
         listProductId.appendChild(newDetailProduct);
-        getProductName(i)
+        getProductName(i);
+        submitId.disabled = "disabled";
     })
     
     function getProduct(id){
@@ -344,14 +346,24 @@
         .then(function (response){
                 priceId.value = totalPriceId.value = totalNettPriceId.innerHTML = response.data.products[parseInt(productIndex)].units[unitIndexAfterSub].price;
                 quantityId.value = 1;
+                getTotalPrice();
+
             })
             .catch(function (error){
                 console.log(error);
             })
-    }
-
+        }
+        
     function getTotalPrice(){
         totalPriceId.value = totalNettPriceId.innerHTML = quantityId.value * priceId.value;
+        i = 0;
+        sumTotalPriceValue = 0;
+        while(document.getElementById('totalPrice_'+i)){
+            sumTotalPriceValue = sumTotalPriceValue + parseInt(document.getElementById('totalPrice_'+i).value);
+            i++;
+        }
+        sumTotalPriceId.innerHTML = sumTotalPriceValue;
+        document.getElementById('submit').removeAttribute('disabled');
     }
 
     function deleteProduct(product){
