@@ -1,0 +1,394 @@
+<html>
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    
+        <title>Hello, world!</title>
+    </head>
+    <style>
+        .container{
+            margin-left: 2%;
+        }
+
+        .align-right{
+            text-align: right;
+        }
+
+        .margin-top-2{
+            margin-top: 2%;
+        }
+
+        h2{
+            font-size: 1rem;
+        }
+
+    </style>
+
+    <form action="">
+        <div class="container border">
+            <h1>Create Order</h1>
+            <div class="row border-bottom">
+                <div class="col">
+                    <h2>Detail</h2>
+                </div>
+                <div class="col-9">
+                    <div class="form-group">
+                        <label for="name">
+                            Name<span style="color: red;">*</span>
+                        </label><br>
+                        <select class="form-control" name="name" id="name" placeholder="Name">
+                            <option value="" disabled selected>Name</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="distributionCenter">
+                            Distribution Center<span style="color: red;">*</span>
+                        </label>
+                        <select class="form-control" name="distributionCenter" id="distributionCenter">
+                            <option value="">No Data Available</option>
+                        </select>
+                    </div>
+                    <div id="moreDetail">
+                        <div class="row">
+                            <div class="col form-group">
+                                <label for="paymentType">
+                                    Payment Type<span style="color: red;">*</span>
+                                </label>
+                                <select class="form-control" name="paymentType" id="paymentType">
+                                    <option value="cash_1">Cash H+1</option>
+                                    <option value="cash_3">Cash H+3</option>
+                                    <option value="cash_7">Cash H+7</option>
+                                    <option value="transfer_1">Transfer H+1</option>
+                                    <option value="transfer_3">Transfer H+3</option>
+                                    <option value="transfer_7">Transfer H+7</option>
+                                </select>
+                            </div>
+                            <div class="col form-group">
+                                <label for="expiredDate">
+                                    Expired Date<span style="color: red;">*</span>
+                                </label>
+                                <input class="form-control" type="date" name="expiredDate" id="expiredDate" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="notes">Notes</label>
+                            <textarea name="notes" class="form-control" id="notes" cols="50" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id=listProduct>
+                <div class="row">
+                    <div class="col">
+                        <h2>Product</h2>
+                    </div>
+                    <div class="col-9">
+                        <div id="detailProduct_0" class="row">
+                            <div class="col-9 form-group">
+                                <label for="product">
+                                    Product<span style="color: red;">*</span>
+                                </label>
+                                <select onchange="getProduct(this.id)" class="form-control" name="product_0" id="product_0">
+                                    <option value="" disabled selected>Product</option>
+                                </select>
+                            </div>
+                            <div class="col-3 form-group">
+                                <label for="unit">
+                                    Unit<span style="color: red;">*</span>
+                                </label><br>
+                                <select onclick="getPrice(this)" class="form-control" name="unit_0" id="unit_0">
+                                    <option value="" disabled>No Data Available</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">
+                                <label for="quantity">
+                                    Quantity<span style="color: red;">*</span>
+                                </label><br>
+                                <input onchange="getTotalPrice()" type="number" class="form-control" name="quantity_0" id="quantity_0">
+                            </div>
+                            <div class="col-3">
+                                <label for="price">
+                                    Price<span style="color: red;">*</span>
+                                </label><br>
+                                <input class="form-control" type="text" name="price_0" id="price_0">
+                            </div>
+                            <div class="col-6 align-right">
+                                <label for="totalPrice">
+                                    Total Price<span style="color: red;">*</span>
+                                </label><br>
+                                <input class="form-control" disabled type="text" name="totalPrice_0" id="totalPrice_0">
+                            </div>
+                        </div>
+                        <div class="row margin-top-2">
+                            <div class="col-md">
+                                &nbsp;
+                            </div>
+                            <div class="col-sm border-top">
+                                <b>Total Nett Price <span class="align-right" id="totalNettPrice_0"></span></b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="almostFooter" class="row">
+                <div class="col-3">&nbsp;</div>
+                <div class="col-9">
+                    <input class="btn btn-warning" type="button" name="newItem" id="newItem" value="NEW ITEM +">
+                    <div class="row">
+                        <div class="col-md">
+                            &nbsp;
+                        </div>
+                        <div class="col-sm border-top margin-top-2">
+                            <b>Total <span class="align-right" id="totalNettPrice"></span></b>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="align-right margin-top-2">
+            <button class="btn">CANCEL</button>
+            <input class="btn btn-success" type="submit" name="submit" id="submit" value="CONFIRM">
+        </div>
+    </form>
+</html>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    const nameId = document.getElementById('name');
+    const moreDetailId = document.getElementById('moreDetail');
+    const submitId = document.getElementById('submit');
+    const expiredDateId = document.getElementById('expiredDate');
+    const paymentTypeId = document.querySelector('#paymentType');
+    const listProductId = document.getElementById('listProduct');
+    const buttonNewItem = document.getElementById('newItem');
+    const almostFooterId = document.getElementById('almostFooter');
+
+    let doneRender = 0;
+       
+    window.addEventListener('DOMContentLoaded', (event) => {
+        moreDetailId.style = almostFooterId.style = listProductId.style = "display:none;";
+         
+        submitId.disabled = "disabled";
+        const today = new Date();
+        tomorrow = new Date(today.setDate(today.getDate()+1)).toISOString().slice(0,10);
+
+        expiredDateId.setAttribute('min',tomorrow);
+        expiredDateId.value = tomorrow;
+
+        axios.get('https://raw.githubusercontent.com/muadzmo/submission-klikdaily/main/employees.json')
+            .then(function (response){
+                for(nameIndex = 0; nameIndex < response.data.data.length; nameIndex++){
+                    nameId.innerHTML += `
+                    <option value="${response.data.data[nameIndex].id}">${response.data.data[nameIndex].employee_name}</option>`;
+                }
+            })
+            .catch(function (error){
+                console.log(error);
+            })
+    })
+
+    nameId.addEventListener('click', (event) => {
+        const dcId = document.getElementById('distributionCenter');
+        if(nameId.value !== "" && !doneRender){
+            dcId.innerHTML=`
+            <option value="tangerang">DC Tangerang</option>
+            <option value="cikarang">DC Cikarang</option>
+            `;
+            moreDetailId.style = almostFooterId.style = listProductId.style = "display:block;";
+            paymentTypeId.value = "cash_1";
+            doneRender = 1;
+            getProductName(0)
+        }else if(nameId.value == ""){
+            dcId.innerHTML = `<option value="">No Data Available</option>`;
+            moreDetailId.style = "display:none;";
+            listProductId.style = "display:none;";
+            doneRender = 0;
+        }
+    })
+
+    paymentTypeId.addEventListener('change', (event) => {
+        const today = new Date();
+        const paymentDayPlus = parseInt(paymentTypeId.value.split('_')[1]);
+        const theDate = new Date(today.setDate(today.getDate()+paymentDayPlus)).toISOString().slice(0,10);
+        expiredDateId.value = theDate
+    })
+
+    buttonNewItem.addEventListener('click', (event) => {
+        i=0;
+        while(document.getElementById('product_'+i)){
+            i++
+        }
+        newDetailProduct = document.createElement('div');
+        newDetailProduct.innerHTML =`
+            <div id="detailProduct_${i}" class="row">
+                <div class="col align-right">
+                    <input type="button" id="delProduct_${i}" onclick="deleteProduct(this)" class="btn btn-danger" value="-">
+                </div>
+                <div class="col-9">
+                    <div class="row">
+                        <div class="col-9 form-group">
+                            <label for="product_${i}">
+                                Product<span style="color: red;">*</span>
+                            </label>
+                            <select onchange="getProduct(this.id)" class="form-control" name="product_${i}" id="product_${i}">
+                                <option value="" disabled selected>Product</option>
+                            </select>
+                        </div>
+                        <div class="col-3 form-group">
+                            <label for="unit_${i}">
+                                Unit<span style="color: red;">*</span>
+                            </label><br>
+                            <select onclick="getPrice(this)" class="form-control" name="unit_${i}" id="unit_${i}">
+                                <option value="" disabled>No Data Available</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">
+                            <label for="quantity_${i}">
+                                Quantity<span style="color: red;">*</span>
+                            </label><br>
+                            <input onchange="getTotalPrice()" type="number" class="form-control" name="quantity_${i}" id="quantity_${i}">
+                        </div>
+                        <div class="col-3">
+                            <label for="price_${i}">
+                                Price<span style="color: red;">*</span>
+                            </label><br>
+                            <input class="form-control" type="text" name="price_${i}" id="price_${i}">
+                        </div>
+                        <div class="col-6 align-right">
+                            <label for="totalPrice_${i}">
+                                Total Price<span style="color: red;">*</span>
+                            </label><br>
+                            <input class="form-control" disabled type="text" name="totalPrice_${i}" id="totalPrice_${i}">
+                        </div>
+                    </div>
+                    <div class="row margin-top-2">
+                        <div class="col-md">
+                            &nbsp;
+                        </div>
+                        <div class="col-sm border-top">
+                            <b>Total Nett Price <span class="align-right" id="totalNettPrice_${i}"></span></b>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        listProductId.appendChild(newDetailProduct);
+        getProductName(i)
+    })
+    
+    function getProduct(id){
+        const productNumber = id.split('_')[1];
+        const productId = document.getElementById(id);
+        const unitId = document.getElementById('unit_'+productNumber);
+
+        productIndex = productId.value.split('_')[0];
+        axios.get('https://raw.githubusercontent.com/muadzmo/submission-klikdaily/main/products.json')
+            .then(function (response){
+                const unitArr = ['pak', 'pcs', 'karton'];
+                unitName = unitId.getElementsByTagName('option');
+                unitId.innerHTML = '';
+                bedaIndex = 0;
+                for(unitIndex = 0; unitIndex < unitArr.length; unitIndex++){
+                    unitId.innerHTML += `
+                    <option value="${unitIndex}_${unitArr[unitIndex]}" disabled>
+                        ${unitArr[unitIndex].charAt(0).toUpperCase() + unitArr[unitIndex].slice(1)}
+                    </option>`;
+    
+                    if(response.data.products[productIndex].units[unitIndex - bedaIndex].name == unitArr[unitIndex]){
+                        unitName[unitIndex].removeAttribute("disabled");
+                        if(unitIndex - bedaIndex === 0){
+                            unitName[unitIndex].setAttribute("selected", "selected");
+                            getPrice(unitId);
+                        }
+                    }else{
+                        bedaIndex++;
+                    }
+                }
+            })
+            .catch(function (error){
+                console.log(error);
+            })
+    }
+    
+    function getPrice(unitId){
+        mustDisabled = "";
+        productNumber = parseInt(unitId.id.split('_')[1]);
+        priceId = document.getElementById('price_'+productNumber);
+        totalPriceId = document.getElementById('totalPrice_'+productNumber);
+        totalNettPriceId = document.getElementById('totalNettPrice_'+productNumber);
+        quantityId = document.getElementById('quantity_'+productNumber);
+        unitIndex = parseInt(unitId.value.split('_')[0]);
+        unitIndexAfterSub = unitIndex - bedaIndex;
+
+        i = 0;
+        while(document.getElementById('product_'+i)){
+            console.log({i},{productNumber});
+            if(i !== productNumber){
+                if(document.getElementById('product_'+i).value.split('_')[0] == document.getElementById('product_'+productNumber).value.split('_')[0]){
+                    mustDisabled = document.getElementById('unit_'+i).value.split('_')[0];
+                    disabledUnitOption(mustDisabled, productNumber);
+                }
+            }
+            i++
+        }
+
+        axios.get('https://raw.githubusercontent.com/muadzmo/submission-klikdaily/main/products.json')
+        .then(function (response){
+                priceId.value = totalPriceId.value = totalNettPriceId.innerHTML = response.data.products[parseInt(productIndex)].units[unitIndexAfterSub].price;
+                quantityId.value = 1;
+            })
+            .catch(function (error){
+                console.log(error);
+            })
+    }
+
+    function getTotalPrice(){
+        totalPriceId.value = totalNettPriceId.innerHTML = quantityId.value * priceId.value;
+    }
+
+    function deleteProduct(product){
+        detailNumber = product.id.split('_')[1];
+        getLastDetailProduct();
+        document.getElementById('detailProduct_'+detailNumber).remove();
+        // if(lastDetailProduct !== detailNumber){
+        //     while(document.getElementById('detailProduct_'+detailNumber)){
+
+        //     }
+        // }
+    }
+
+    function getProductName(productNumber){
+        axios.get('https://raw.githubusercontent.com/muadzmo/submission-klikdaily/main/products.json')
+            .then(function (response){
+                for(productIndex = 0; productIndex < response.data.products.length; productIndex++){
+                    document.getElementById('product_'+productNumber).innerHTML += `
+                    <option value="${productIndex}_${response.data.products[productIndex].product_id}">${response.data.products[productIndex].product_name}</option>`
+                }
+            })
+            .catch(function (error){
+                console.log(error);
+            })
+    }
+
+    function getLastDetailProduct(){
+        i = 0;
+        while(document.getElementById('detailProduct_'+i)){
+            i++
+        }
+        return lastDetailProduct = i;
+    }
+
+    function disabledUnitOption(mustDisabled, productNumber){
+        const unitId = document.getElementById('unit_'+productNumber);
+        unitName = unitId.getElementsByTagName('option');
+        unitName[mustDisabled].setAttribute("disabled","disabled");
+    }
+</script>
